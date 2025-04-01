@@ -1,11 +1,22 @@
-import { useContext } from "react";
-import { context } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 export function Home() {
-  const authUser = useContext(context);
+  const { user, logout, loading } = useAuth();
 
-  console.log(authUser);
-  
+  const handleLogout = async () => {
+    await logout();
+  };
 
-  return <h1>Home</h1>;
+  console.log(user);
+
+  if (loading) return <h1>Loading</h1>;
+
+  return (
+    <div>
+      <h1>Welcome {user.displayName || user.email}</h1>
+      <img src={user.photoURL} alt="Foto de Perfil" />
+
+      <button onClick={handleLogout}>Logout</button>
+    </div>
+  );
 }
